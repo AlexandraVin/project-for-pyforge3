@@ -4,8 +4,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
+from load_data import get_compounds
 
-engine = create_engine("postgresql+psycopg2://postgres:password@localhost:5432/postgres")
+
+engine = create_engine(
+    "postgresql+psycopg2://postgres:password@localhost:5432/postgres")
 Base = declarative_base()
 Session = sessionmaker(bind=engine)
 
@@ -68,11 +71,22 @@ def insert_compounds(list_compounds):
 
 if __name__ == '__main__':
     Base.metadata.create_all(engine)
-    test_json = read_test_json('ATP.json')
-    list_compounds = parse_json_to_compounds(test_json)
+    json_data = get_compounds(
+        'ADP',
+        'ATP',
+        'STI',
+        'ZID',
+        'DPM',
+        'XP9',
+        '18W',
+        '29P',
+    )
+
+    list_compounds = []
+    for j in json_data:
+        list_compounds.extend(parse_json_to_compounds(j))
     insert_compounds(list_compounds)
 
     with Session() as session:
         for x in session.query(Compound).all():
             print(x.name)
-

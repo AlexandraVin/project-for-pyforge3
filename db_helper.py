@@ -2,14 +2,12 @@ from sqlalchemy import Column, Integer, String, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-from config import CONFIG
-
 
 def normalize_str(arg: str):
     arg = str(arg)
     length = len(arg)
     if length > 13:
-        arg = arg[:10]+'...'
+        arg = arg[:10] + '...'
     if length < 13:
         arg += ' ' * (13 - length)
     return arg + ' '
@@ -67,24 +65,22 @@ def parse_json_to_compounds(json) -> list[Compound]:
     return result
 
 
-def get_session_maker():
-    engine = create_engine(CONFIG.engine)
+def get_session_maker(engine):
+    engine = create_engine(engine)
     Session = sessionmaker(bind=engine)
     Compound.metadata.create_all(engine)
     return Session
 
 
-def insert_compounds(list_compounds):
-    sessionmarker = get_session_maker()
-    with sessionmarker() as session:
+def insert_compounds(session_maker, list_compounds):
+    with session_maker() as session:
         for c in list_compounds:
             session.add(c)
         session.commit()
 
 
-def read_compounds() -> list[str]:
-    sessionmarker = get_session_maker()
-    with sessionmarker() as session:
+def read_compounds(session_maker) -> list[str]:
+    with session_maker() as session:
         data = session.query(Compound).all()
     res = []
     if data:

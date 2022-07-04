@@ -2,11 +2,8 @@ import json
 
 
 class Config:
-    def __init__(self) -> None:
-        with open('config.json') as f:
+    def __init__(self, config_path) -> None:
+        with open(config_path) as f:
             config = json.loads(f.read())
         for k, v in config.items():
-            self.__setattr__(k, v)
-
-
-CONFIG = Config()
+            setattr(self, k, v)

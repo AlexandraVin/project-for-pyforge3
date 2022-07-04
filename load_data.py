@@ -48,7 +48,7 @@ def get_compounds(*args):
     return res
 
 
-if __name__ == "__main__":
+def main(args):
     logging.basicConfig(filename=f'load_data.log',
                         filemode=CONFIG.filemode_for_logger,
                         format='%(asctime)s:%(msecs)d\t%(name)s\t%(levelname)s\t%(message)s',
@@ -57,8 +57,8 @@ if __name__ == "__main__":
 
     support_list = CONFIG.support_list
 
-    if len(sys.argv) > 1:
-        arg_set = set(sys.argv[1:])
+    if len(args) > 1:
+        arg_set = set(args[1:])
         ignored = arg_set-set(support_list)
         if ignored:
             for arg in ignored:
@@ -74,3 +74,7 @@ if __name__ == "__main__":
         support = '\n'.join(support_list)
         print(
             f'Expected at least one argument\nThese arguments are supported: \n{support}')
+
+
+if __name__ == "__main__":
+    main(sys.argv)

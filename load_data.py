@@ -5,7 +5,7 @@ import sys
 
 from aiohttp import ClientSession, ClientTimeout
 from config import Config
-from db_helper import Compound, insert_compounds, get_session_maker,  parse_json_to_compounds
+from db_helper import Compound, insert_compounds, get_session_maker, parse_json_to_compounds
 
 
 async def fetch_all(urls: list, timeout: int):
@@ -46,7 +46,15 @@ def get_compounds(config, *args):
 
 
 def main(args):
-    config = Config('config.json')
+    if '--config' in args:
+        i = args.index('--config')
+        config_path = args[i + 1]
+        del args[i: i + 2]
+    else:
+        config_path = 'config.json'
+
+    config = Config(config_path)
+
     logging.basicConfig(filename=f'load_data.log',
                         filemode=config.filemode_for_logger,
                         format='%(asctime)s:%(msecs)d\t%(name)s\t%(levelname)s\t%(message)s',

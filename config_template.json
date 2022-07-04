@@ -1,0 +1,15 @@
+{
+    "engine": "postgresql://[username]:[password]@[host]:[port]/[database_name]",
+    "filemode_for_logger": "w",
+    "support_list": [
+        "ADP",
+        "ATP",
+        "STI",
+        "ZID",
+        "DPM",
+        "XP9",
+        "18W",
+        "29P"
+    ],
+    "compounds_url": "https://www.ebi.ac.uk/pdbe/graph-api/compound/summary/"
+}

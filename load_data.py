@@ -15,7 +15,7 @@ async def fetch_all(urls: list):
     tasks = []
     logging.debug(f'fetch_all urls = {urls}')
 
-    async with ClientSession(timeout=ClientTimeout(total=1)) as session:
+    async with ClientSession(timeout=ClientTimeout(total=CONFIG.timeout)) as session:
         for url in urls:
             task = asyncio.ensure_future(fetch(url, session))
             tasks.append(task)

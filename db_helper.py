@@ -56,7 +56,8 @@ def parse_json_to_compounds(json) -> list[Compound]:
     result = []
     for compound_key in json.keys():
         for compound in json[compound_key]:
-            kwargs = dict(name=compound['name'],
+            kwargs = dict(compound=compound_key,
+                          name=compound['name'],
                           formula=compound['formula'],
                           inchi=compound['inchi'],
                           inchi_key=compound['inchi_key'],

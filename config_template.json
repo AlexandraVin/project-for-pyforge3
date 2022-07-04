@@ -11,5 +11,6 @@
         "18W",
         "29P"
     ],
-    "compounds_url": "https://www.ebi.ac.uk/pdbe/graph-api/compound/summary/"
+    "compounds_url": "https://www.ebi.ac.uk/pdbe/graph-api/compound/summary/",
+    "timeout": 1
 }

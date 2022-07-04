@@ -74,7 +74,7 @@ if __name__ == "__main__":
                 logging.warning(msg)
         compounds = list(arg_set - ignored)
         res = get_compounds(*compounds)
-        print(*res,sep='\n')
+        print(*res, sep='\n')
     else:
         support = '\n'.join(support_list)
         print(

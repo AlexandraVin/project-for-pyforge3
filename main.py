@@ -36,10 +36,11 @@ if __name__ == '__main__':
     Compound.metadata.create_all(engine)
     json_data = get_compounds(*config.compounds_to_load)
 
-    list_compounds = []
-    for j in json_data:
-        list_compounds.extend(j)
-    insert_compounds(list_compounds, Session)
+    # list_compounds = []
+    # for j in json_data:
+    #     list_compounds.append(j)
+    # insert_compounds(list_compounds, Session)
+    insert_compounds(json_data, Session)
 
     with Session() as session:
         for x in session.query(Compound).all():

@@ -19,13 +19,13 @@ class Compound(Base):
     cross_links_count = Column(Integer)
 
     def __str__(self):
-        return f'{self.compound}: {self.name}'
+        return f'Compound({self.compound})'
 
     def __repr__(self):
-        return f'Compound({self.compound}={self.name})'
+        return str(self)
 
 
-def parse_json_to_compounds(json):
+def parse_json_to_compounds(json) -> list[Compound]:
     result = []
     for compound_key in json:
         for compound in json[compound_key]:

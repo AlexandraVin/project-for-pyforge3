@@ -1,0 +1,14 @@
+{
+    "engine": "postgresql://postgres:postgres@localhost:5433/postgres",
+    "filemode_for_logger": "w",
+    "compounds_to_load": [
+        "ADP",
+        "ATP",
+        "STI",
+        "ZID",
+        "DPM",
+        "XP9",
+        "18W",
+        "29P"
+    ]
+}

@@ -4,8 +4,8 @@ import logging
 import sys
 
 from aiohttp import ClientSession, ClientTimeout
-from config import Config
-from db_helper import Compound, insert_compounds, get_session_maker, parse_json_to_compounds
+from config import extract_config
+from db_helper import Compound, insert_compounds, parse_json_to_compounds
 
 
 async def fetch_all(urls: list, timeout: int):
@@ -46,14 +46,8 @@ def get_compounds(config, *args):
 
 
 def main(args):
-    if '--config' in args:
-        i = args.index('--config')
-        config_path = args[i + 1]
-        del args[i: i + 2]
-    else:
-        config_path = 'config.json'
 
-    config = Config(config_path)
+    config = extract_config(args)
 
     logging.basicConfig(filename=f'load_data.log',
                         filemode=config.filemode_for_logger,
@@ -62,8 +56,8 @@ def main(args):
                         level=logging.DEBUG)
 
     support_list = config.support_list
-    session_maker = get_session_maker(config.engine)
 
+    compounds = []
     if len(args) > 1:
         arg_set = set(args[1:])
         ignored = arg_set - set(support_list)
@@ -73,10 +67,12 @@ def main(args):
                 print(msg)
                 logging.warning(msg)
         compounds = list(arg_set - ignored)
+
+    if compounds:
         res = get_compounds(config, *compounds)
         print(*res, sep='\n')
 
-        insert_compounds(session_maker, res)
+        insert_compounds(config, res)
     else:
         support = '\n'.join(support_list)
         print(

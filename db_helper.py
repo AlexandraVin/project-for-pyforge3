@@ -1,6 +1,5 @@
-from sqlalchemy import Column, Integer, String, create_engine
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
 
 
 def normalize_str(arg: str):
@@ -65,23 +64,17 @@ def parse_json_to_compounds(json) -> list[Compound]:
     return result
 
 
-def get_session_maker(engine):
-    engine = create_engine(engine)
-    Session = sessionmaker(bind=engine)
-    Compound.metadata.create_all(engine)
-    return Session
-
-
-def insert_compounds(session_maker, list_compounds):
-    with session_maker() as session:
+def insert_compounds(config, list_compounds):
+    with config.session_maker() as session:
         for c in list_compounds:
             session.add(c)
         session.commit()
 
 
-def read_compounds(session_maker) -> list[str]:
-    with session_maker() as session:
-        data = session.query(Compound).all()
+def read_compounds(config) -> list[str]:
+    with config.session_maker() as session:
+        data = session.query(Compound).order_by(
+            Compound.id.desc()).limit(config.limit).all()
     res = []
     if data:
         res.append(data[0].header())

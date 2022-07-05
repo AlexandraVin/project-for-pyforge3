@@ -1,9 +1,9 @@
-from db_helper import get_session_maker, read_compounds
-from config import Config
+import sys
+from db_helper import read_compounds
+from config import extract_config
 
 if __name__ == "__main__":
-    config = Config('config.json')
-    session_maker = get_session_maker(config.engine)
-    res = read_compounds(session_maker)
+    config = extract_config(sys.argv)
+    res = read_compounds(config)
     res = '\n'.join(res)
     print(res)

@@ -1,45 +1,46 @@
 import io
 import os.path
 import sys
+from db_helper import Compound
 from load_data import main
 
 
+def main_for_test(*arg, **kwarg):
+    try:
+        out = io.StringIO()
+        sys.stdout = out
+        main(*arg, **kwarg)
+        return out.getvalue().strip()
+    finally:
+        sys.stdout = sys.__stdout__
+
+
 class TestE2EIntegration:
-    config_path = os.path.join(os.path.pardir, 'config.json')
 
     def test_empty_string_input(self):
-        out = io.StringIO()
-        sys.stdout = out
-        main(['load_data.py', '--config', TestE2EIntegration.config_path])
-        sys.stdout = sys.__stdout__
-        assert out.getvalue().strip().startswith('Expected at least one argument')
+        res = main_for_test(['load_data.py'])
+
+        assert res.startswith('Expected at least one argument')
 
     def test_incorrect_string_input(self):
-        out = io.StringIO()
-        sys.stdout = out
-        main(['load_data.py', 'ABC', '--config', TestE2EIntegration.config_path])
-        sys.stdout = sys.__stdout__
-        assert out.getvalue().strip() == 'argument "ABC" was ignored'
+        res = main_for_test(['load_data.py', 'ABC'])
+
+        assert res.startswith(
+            'argument "ABC" was ignored\nExpected at least one argument')
 
     def test_correct_string_input(self):
-        out = io.StringIO()
-        sys.stdout = out
-        main(['load_data.py', 'STI', '--config', TestE2EIntegration.config_path])
-        sys.stdout = sys.__stdout__
-        assert out.getvalue().strip() == 'Compound(STI)'
+        res = main_for_test(['load_data.py', 'STI'])
+
+        assert res == 'Compound(STI)'
 
     def test_correct_string_multi_input(self):
-        out = io.StringIO()
-        sys.stdout = out
-        main(['load_data.py', 'DPM', 'STI', '--config', TestE2EIntegration.config_path])
-        sys.stdout = sys.__stdout__
-        assert 'Compound(DPM)' in out.getvalue().strip()
-        assert 'Compound(STI)' in out.getvalue().strip()
+        res = main_for_test(['load_data.py', 'DPM', 'STI'])
+
+        assert str(Compound(compound='DPM')) in res
+        assert str(Compound(compound='STI')) in res
 
     def test_string_multi_input(self):
-        out = io.StringIO()
-        sys.stdout = out
-        main(['load_data.py', 'ABC', 'STI', '--config', TestE2EIntegration.config_path])
-        sys.stdout = sys.__stdout__
-        assert 'argument "ABC" was ignored' in out.getvalue().strip()
-        assert 'Compound(STI)' in out.getvalue().strip()
+        res = main_for_test(['load_data.py', 'ABC', 'STI'])
+
+        assert 'argument "ABC" was ignored' in res
+        assert str(Compound(compound='STI')) in res

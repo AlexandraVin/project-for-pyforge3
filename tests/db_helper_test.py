@@ -1,5 +1,5 @@
 import pytest
-from upload_data import parse_json_to_compounds
+from db_helper import parse_json_to_compounds
 
 
 class TestParse:

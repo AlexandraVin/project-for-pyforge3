@@ -40,3 +40,18 @@ C13 H26 N ... 1             XP9           WUTPSGIFCC... CC(C(C(=O)... InChI=1S/C
 * compounds_url - URL to download data on compounds
 * timeout - one-request connection timeout
 * limit - maximum number of lines to read with read_data.py
+## testing:
+use ```pytest tests``` to run all tests
+output:
+```
+===================== test session starts =====================
+platform win32 -- Python 3.9.6, pytest-6.2.5, py-1.10.0, pluggy-1.0.0
+rootdir: C:\Users\evgeniy.varganov\Desktop\proj\project-for-pyforge3
+plugins: allure-pytest-2.9.43
+collected 8 items
+
+tests\db_helper_test.py ...                              [ 37%]
+tests\load_data_test.py .....                            [100%]
+
+====================== 8 passed in 2.13s ======================
+```

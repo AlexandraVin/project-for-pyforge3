@@ -1,19 +1,35 @@
 # project-for-pyforge3
 
 Before using it is required to run the docker container with PostgreSQL.
-
+```
 docker pull postgres
-
+```
+```
 docker run -p 5432:5432 -e POSTGRES_PASSWORD=password postgres
-
+```
+```
 git clone https://github.com/AlexandraVin/project-for-pyforge3.git 
-
+```
+```
 cd project-for-pyforge3
+```
 
-pip install -r requirements.txt
+To build docker image with script to load data:
+```
+docker image build -t pyforge3:0.0.1 -f Dockerfile1 .
+```
+```
+docker run -v $(pwd)/config.json:/usr/src/config.json --network=host pyforge3:0.0.1 STI   
+```
+where STI - name of compound load
 
-copy config_template.json config.json
-
+To build docker image with script to read data:
+```
+docker image build -t pyforge3-list:0.0.1 -f Dockerfile2 .
+```
+```
+docker run -v $(pwd)/config.json:/usr/src/config.json --network=host pyforge3-list:0.0.1
+```
 ## How to use:
 run 
 ```load_data.py XP9 18W 29P G54```

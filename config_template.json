@@ -1,5 +1,5 @@
 {
-    "engine": "postgresql://[username]:[password]@[host]:[port]/[database_name]",
+    "engine": "postgresql://postgres:password@localhost:5432/postgres",
     "filemode_for_logger": "w",
     "support_list": [
         "ADP",
